@@ -29,6 +29,7 @@ public class App {
 
 		printMatrix(matrix);
 		printPath(matrix, output);
+		// System.out.println(new Astar().getNeighborhood(start, matrix, 0.0));
 	}
 
 	private static FileParameter readFromFile(String fileName) throws FileNotFoundException {
