@@ -1,34 +1,34 @@
 package io.github.lucascsoliveira.pathplanning.util;
 
-public class OrderedPair<X, Y> {
+public class OrderedPair<T> {
 
-	private X x;
+	private T x;
 
-	private Y y;
+	private T y;
 
 	public OrderedPair() {
 		super();
 	}
 
-	public OrderedPair(X x, Y y) {
+	public OrderedPair(T x, T y) {
 		super();
 		this.x = x;
 		this.y = y;
 	}
 
-	public X getX() {
+	public T getX() {
 		return x;
 	}
 
-	public void setX(X x) {
+	public void setX(T x) {
 		this.x = x;
 	}
 
-	public Y getY() {
+	public T getY() {
 		return y;
 	}
 
-	public void setY(Y y) {
+	public void setY(T y) {
 		this.y = y;
 	}
 
@@ -66,7 +66,7 @@ public class OrderedPair<X, Y> {
 
 	@Override
 	public String toString() {
-		return "OrderedPair [x=" + x + ", y=" + y + "]";
+		return "(" + x + ", " + y + ")";
 	}
 
 }
