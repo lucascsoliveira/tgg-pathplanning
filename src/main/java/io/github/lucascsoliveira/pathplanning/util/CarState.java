@@ -15,18 +15,12 @@ public class CarState {
 		this.theta = theta;
 	}
 
-	public CarState(IntegerOrderedPair discrete, DoubleOrderedPair continuous, Double theta) {
-		super();
-		this.position = continuous;
-		this.theta = theta;
-	}
-
-	public DoubleOrderedPair getContinuous() {
+	public DoubleOrderedPair getPosition() {
 		return position;
 	}
 
-	public void setContinuous(DoubleOrderedPair continuous) {
-		this.position = continuous;
+	public void setPosition(DoubleOrderedPair position) {
+		this.position = position;
 	}
 
 	public Double getTheta() {

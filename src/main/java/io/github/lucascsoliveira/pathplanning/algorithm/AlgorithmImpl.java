@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import io.github.lucascsoliveira.pathplanning.util.CarState;
 import io.github.lucascsoliveira.pathplanning.util.IntegerOrderedPair;
 
 public abstract class AlgorithmImpl implements IAlgorithm {
 
-	protected final double DELTA_TIME = 0.5; // Seconds
+	protected final double DELTA_TIME = 1.0; // Seconds
 	protected final double VELOCITY = 1.0; // Meters
 	protected final double L = 2.625;// Meters
 	protected final double MAX_STEERING_ANGLE = 0.5337; // Rad
@@ -25,6 +26,31 @@ public abstract class AlgorithmImpl implements IAlgorithm {
 	}
 
 	public List<IntegerOrderedPair> getNeighborhood(IntegerOrderedPair current, Double[][] costs) {
+		ArrayList<IntegerOrderedPair> neighborhood = new ArrayList<IntegerOrderedPair>();
+		IntegerOrderedPair tmp;
+
+		// LEFT
+		tmp = calculateNeighbor(current, ALL_LEFT_STEERING_ANGLE, (Math.PI / 2));
+		if (inBounds(costs, tmp.getX(), tmp.getY()))
+			neighborhood.add(tmp);
+
+		// STRAIGHT
+		tmp = calculateNeighbor(current, STRAIGHT_STEERING_ANGLE, 0.0);
+		if (inBounds(costs, tmp.getX(), tmp.getY()))
+			neighborhood.add(tmp);
+
+		// RIGHT
+		tmp = calculateNeighbor(current, ALL_RIGHT_STEERING_ANGLE, (3 * Math.PI / 2));
+		if (inBounds(costs, tmp.getX(), tmp.getY()))
+			neighborhood.add(tmp);
+
+		System.out.println(current);
+		System.out.println(neighborhood);
+		
+		return neighborhood;
+	}
+
+	public List<IntegerOrderedPair> getNeighborhood1(IntegerOrderedPair current, Double[][] costs) {
 		ArrayList<IntegerOrderedPair> neighborhood = new ArrayList<IntegerOrderedPair>();
 		int line = current.getX(), column = current.getY();
 
@@ -56,7 +82,7 @@ public abstract class AlgorithmImpl implements IAlgorithm {
 
 		for (IntegerOrderedPair node : nodes) {
 			Double currentScore = costs[node.getX()][node.getY()];
-			if (lowestCost.compareTo(currentScore) > 0) {
+			if (lowestCost.compareTo(currentScore) >= 0) {
 				lowestCost = currentScore;
 				lowestCostNode = node;
 			}
@@ -97,6 +123,39 @@ public abstract class AlgorithmImpl implements IAlgorithm {
 		}
 
 		return run(newCosts, start, goal);
+	}
+
+	public Double calculateX(Double x, Double theta) {
+		return x + DELTA_TIME * VELOCITY * Math.cos(theta);
+	}
+
+	public Double calculateY(Double y, Double theta) {
+		return y + DELTA_TIME * VELOCITY * Math.sin(theta);
+	}
+
+	public Double calculateTheta(Double theta, Double steeringAngle) {
+		return theta + DELTA_TIME * VELOCITY * Math.tan(steeringAngle) / L;
+	}
+
+	public IntegerOrderedPair calculateNeighbor(IntegerOrderedPair current, Double phi, Double defaultTheta) {
+		Double theta, x, y;
+
+		if (current.getCarState() != null) {
+			theta = current.getCarState().getTheta();
+			x = current.getCarState().getPosition().getX();
+			y = current.getCarState().getPosition().getY();
+		} else {
+			theta = defaultTheta;
+			x = current.getX().doubleValue();
+			y = current.getY().doubleValue();
+		}
+
+		Double new_theta = calculateTheta(theta, phi);
+		Double new_x = calculateX(x, new_theta);
+		Double new_y = calculateY(y, new_theta);
+
+		return new IntegerOrderedPair(new Long(Math.round(new_x)).intValue(), new Long(Math.round(new_y)).intValue(),
+				new CarState(new_x, new_y, new_theta));
 	}
 
 }

@@ -14,7 +14,7 @@ import io.github.lucascsoliveira.pathplanning.util.IntegerOrderedPair;
 public class App {
 
 	public static void main(String[] args) throws FileNotFoundException {
-		String fileName = "file/matrix.txt";
+		String fileName = "file/matrix2.txt";
 		Double threshold = 0.5;
 
 		FileParameter parameters = readFromFile(fileName);
@@ -26,7 +26,7 @@ public class App {
 		IAlgorithm algorithm = new Astar();
 
 		List<IntegerOrderedPair> output = algorithm.run(matrix, start, goal, threshold);
-
+		System.out.println(output);
 		printMatrix(matrix);
 		printPath(matrix, output);
 	}

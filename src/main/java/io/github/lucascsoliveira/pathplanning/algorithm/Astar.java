@@ -3,6 +3,8 @@ package io.github.lucascsoliveira.pathplanning.algorithm;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.plaf.synth.SynthSeparatorUI;
+
 import io.github.lucascsoliveira.pathplanning.util.IntegerOrderedPair;
 
 public class Astar extends AlgorithmImpl {
